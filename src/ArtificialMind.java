@@ -13,7 +13,21 @@ public class ArtificialMind {
 		
 		
 		Thread loadingThread = new Thread(this.data);
+		
 		loadingThread.start();
+		try
+		{
+			loadingThread.join();
+		}
+		catch(InterruptedException e)
+		{
+			e.printStackTrace();
+		}
+		
+		
+		Thread analyzeThread = new Thread(this.screenAnalyzer);
+		analyzeThread.setDaemon(false);
+		analyzeThread.start();
 	}
 	
 	

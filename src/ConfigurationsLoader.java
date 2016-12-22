@@ -8,6 +8,8 @@ public class ConfigurationsLoader implements Runnable {
 	
 	private int gameCornerX = 0;
 	private int gameCornerY = 0;
+	private int gameWidth = 0;
+	private int gameHeight = 0;
 	private int ballWidth = 0;
 	private int padWidth = 0;
 	private int padHeight = 0;
@@ -38,6 +40,14 @@ public class ConfigurationsLoader implements Runnable {
 					
 					case "gameCornerY" :
 						this.gameCornerY = paramValue;
+					break;
+					
+					case "gameWidth" :
+						this.gameWidth = paramValue;
+					break;
+					
+					case "gameHeight" :
+						this.gameHeight = paramValue;
 					break;
 						
 					case "ballWidth" :
@@ -118,5 +128,13 @@ public class ConfigurationsLoader implements Runnable {
 	public int getPlayerPadX()
 	{
 		return this.playerPadX;
+	}
+	public int getGameWidth()
+	{
+		return this.gameWidth;
+	}
+	public int getGameHeight()
+	{
+		return this.gameHeight;
 	}
 }
