@@ -1,0 +1,11 @@
+gameCornerX 264
+gameCornerY 66
+ballWidth 26
+padWidth 27
+padHeight 134
+topLimitY 274
+botLimitY 861
+enemyPadX 304
+enemyPadY 529
+playerPadX 1269
+playerPadY 401
