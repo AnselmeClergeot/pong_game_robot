@@ -1,10 +1,8 @@
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Scanner;
 
-public class ConfigurationsLoader {
+public class ConfigurationsLoader implements Runnable {
 	
 	private String filePath = "game_infos/configurations.txt";
 	private ScreenAnalyzer toLoad;
@@ -14,7 +12,7 @@ public class ConfigurationsLoader {
 		this.toLoad = toLoad;
 	}
 	
-	public void load()
+	public void run()
 	{
 		try(Scanner scanner = new Scanner(new File(this.filePath)))
 		{
