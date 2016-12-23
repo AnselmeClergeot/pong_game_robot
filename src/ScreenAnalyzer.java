@@ -12,9 +12,10 @@ public class ScreenAnalyzer implements Runnable
 {
 	private ConfigurationsLoader data;
 	private Robot robot;
-	private int analysisFramerate = 1;
+	private int analysisFramerate = 100;
 	private boolean analyzing = false;
 	private BufferedImage playerPadImage;
+	private BufferedImage ballZoneImage;
 	private long last;
 	
 	private int lastPlayerY = 0;
@@ -25,6 +26,7 @@ public class ScreenAnalyzer implements Runnable
 	
 	private int ballDirectionX = 0;
 	private int ballDirectionY = 0;
+	private int i = 0;
 	
 	public ScreenAnalyzer(ConfigurationsLoader data)
 	{
@@ -64,7 +66,10 @@ public class ScreenAnalyzer implements Runnable
 				this.last = System.currentTimeMillis();
 				
 				this.playerPadImage = this.robot.createScreenCapture(new Rectangle(this.data.getGameCornerX()+this.data.getGameWidth()-this.data.getPadWidth(), this.data.getGameCornerY(), 1, this.data.getGameHeight()));
-
+				this.ballZoneImage = this.robot.createScreenCapture(new Rectangle(this.data.getGameCornerX(), this.data.getGameCornerY()+this.data.getBallZoneY(), this.data.getBallZoneWidth(), this.data.getGameHeight()-this.data.getBallZoneY()));
+				
+				
+				
 				this.findLastPlayerY();
 				this.findLastBallY();
 				this.calculateBallDirection();
@@ -90,13 +95,26 @@ public class ScreenAnalyzer implements Runnable
 		} while((color.getGreen() != 255 || color.getBlue() != 255 || color.getRed() != 255) && lastPlayerY < this.data.getGameHeight());
 		
 		this.lastPlayerY = lastPlayerY;
-		System.out.println(this.lastPlayerY);
 	}
 	
 	private void findLastBallY()
 	{
-	
+		int x = 0;
+		int y = 0;
 		
+		for(y = 0; y < this.ballZoneImage.getHeight(); y++)
+		{
+			for(x = 0; x < this.ballZoneImage.getWidth(); x++)
+			{
+				Color color = this.getColor(this.ballZoneImage.getRGB(x, y));
+				
+				if(color.getRed() == 255 && color.getGreen() == 255 && color.getBlue() == 255)
+				{
+					System.out.println("Ball is on "+x +"," + y);
+					break;
+				}
+			}
+		}
 		
 	}
 	

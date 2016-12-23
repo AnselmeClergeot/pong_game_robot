@@ -13,6 +13,8 @@ public class ConfigurationsLoader implements Runnable {
 	private int ballWidth = 0;
 	private int padWidth = 0;
 	private int padHeight = 0;
+	private int ballZoneY = 0;
+	private int ballZoneWidth = 0;
 	
 	public ConfigurationsLoader()
 	{
@@ -57,6 +59,14 @@ public class ConfigurationsLoader implements Runnable {
 					case "padHeight" :
 						this.padHeight = paramValue;
 					break;
+					
+					case "ballZoneY" :
+						this.ballZoneY = paramValue;
+					break;
+					
+					case "ballZoneWidth" :
+						this.ballZoneWidth = paramValue;
+					break;
 						
 					default :
 						
@@ -100,5 +110,13 @@ public class ConfigurationsLoader implements Runnable {
 	public int getGameHeight()
 	{
 		return this.gameHeight;
+	}
+	public int getBallZoneY()
+	{
+		return this.ballZoneY;
+	}
+	public int getBallZoneWidth()
+	{
+		return this.ballZoneWidth;
 	}
 }
