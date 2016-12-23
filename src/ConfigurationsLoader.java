@@ -13,10 +13,6 @@ public class ConfigurationsLoader implements Runnable {
 	private int ballWidth = 0;
 	private int padWidth = 0;
 	private int padHeight = 0;
-	private int topLimitY = 0;
-	private int botLimitY = 0;
-	private int enemyPadX = 0;
-	private int playerPadX = 0;
 	
 	public ConfigurationsLoader()
 	{
@@ -62,22 +58,6 @@ public class ConfigurationsLoader implements Runnable {
 						this.padHeight = paramValue;
 					break;
 						
-					case "topLimitY" :
-						this.topLimitY = paramValue;
-					break;
-					
-					case "botLimitY" :
-						this.botLimitY = paramValue;
-					break;
-					
-					case "enemyPadX" :
-						this.enemyPadX = paramValue;
-					break;
-						
-					case "playerPadX" :
-						this.playerPadX = paramValue;
-					break;
-						
 					default :
 						
 					break;
@@ -112,22 +92,6 @@ public class ConfigurationsLoader implements Runnable {
 	public int getPadHeight()
 	{
 		return this.padHeight;
-	}
-	public int getTopLimitY()
-	{
-		return this.topLimitY;
-	}
-	public int getBotLimitY()
-	{
-		return this.botLimitY;
-	}
-	public int getEnemyPadX()
-	{
-		return this.enemyPadX;
-	}
-	public int getPlayerPadX()
-	{
-		return this.playerPadX;
 	}
 	public int getGameWidth()
 	{
