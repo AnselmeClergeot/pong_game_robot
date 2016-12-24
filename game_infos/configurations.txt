@@ -5,5 +5,5 @@ gameHeight 576
 ballWidth 20
 padWidth 19
 padHeight 98
-ballZoneY 92
+ballZoneY 0
 ballZoneWidth 341

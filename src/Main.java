@@ -2,6 +2,9 @@ public class Main {
 	
 	public static void main(String args[])
 	{
-		ArtificialMind ia = new ArtificialMind();
+		PongRobot robot = new PongRobot();
+		Thread pongRobot = new Thread(robot);
+		pongRobot.setDaemon(false);
+		pongRobot.start();
 	}
 }

@@ -1,36 +1,25 @@
 import java.awt.AWTException;
-import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
-
-public class ScreenAnalyzer implements Runnable	
+public class ScreenAnalyzer
 {
-	private ConfigurationsLoader data;
+	private PadPositionFinder padPosFinder;
+	private BallPositionFinder ballPositionFinder;
+	private GameDisplayInfos infos;
+	
 	private Robot robot;
-	private int analysisFramerate = 100;
-	private boolean analyzing = false;
-	private BufferedImage playerPadImage;
-	private BufferedImage ballZoneImage;
-	private long last;
 	
-	private int lastPlayerY = 0;
-	private int currentBallX = 0;
-	private int currentBallY = 0;
-	private int lastBallX = 0;
-	private int lastBallY = 0;
+	private int playerY = 0;
+	private int ballX = 0;
+	private int ballY = 0;
+	private boolean ballFound = false;
 	
-	private int ballDirectionX = 0;
-	private int ballDirectionY = 0;
-	private int i = 0;
-	
-	public ScreenAnalyzer(ConfigurationsLoader data)
+	public ScreenAnalyzer(GameDisplayInfos infos)
 	{
-		this.data = data;
+		this.infos = infos;
+		
 		try
 		{
 			this.robot = new Robot();
@@ -40,97 +29,45 @@ public class ScreenAnalyzer implements Runnable
 			e.printStackTrace();
 		}
 		
-		this.lastBallX = this.data.getGameWidth()/2-this.data.getBallWidth()/2;
-		this.lastBallY = this.data.getGameHeight()/2-this.data.getBallWidth()/2;
+		
+		this.padPosFinder = new PadPositionFinder(this, this.infos);
+		this.ballPositionFinder = new BallPositionFinder(this, this.infos);
 	}
 	
-	public void setAnalysisFramerate(int rate)
+	public void setBallFound(boolean found)
 	{
-		this.analysisFramerate = rate;
+		this.ballFound = found;
 	}
 	
-	public void stopAnalyzing()
+	public void update()
 	{
-		this.analyzing = false;
+		this.padPosFinder.update();
+		this.ballPositionFinder.update();
 	}
 	
-	public void run()
+	public void setPlayerY(int y)
 	{
-		
-		this.analyzing = true;
-		
-		while(this.analyzing)
-		{
-			if(System.currentTimeMillis() - this.last > this.analysisFramerate)
-			{
-				this.last = System.currentTimeMillis();
-				
-				this.playerPadImage = this.robot.createScreenCapture(new Rectangle(this.data.getGameCornerX()+this.data.getGameWidth()-this.data.getPadWidth(), this.data.getGameCornerY(), 1, this.data.getGameHeight()));
-				this.ballZoneImage = this.robot.createScreenCapture(new Rectangle(this.data.getGameCornerX(), this.data.getGameCornerY()+this.data.getBallZoneY(), this.data.getBallZoneWidth(), this.data.getGameHeight()-this.data.getBallZoneY()));
-				
-				
-				
-				this.findLastPlayerY();
-				this.findLastBallY();
-				this.calculateBallDirection();
-
-				
-			}
-			
-		}
-		
+		this.playerY = y;
 	}
 	
-	private void findLastPlayerY()
+	public void setBallPosition(int x, int y)
 	{
-		int lastPlayerY = 0;
-		Color color;
-		
-		do
-		{
-			color = this.getColor(this.playerPadImage.getRGB(0, lastPlayerY));
-			
-			lastPlayerY++;
-			  
-		} while((color.getGreen() != 255 || color.getBlue() != 255 || color.getRed() != 255) && lastPlayerY < this.data.getGameHeight());
-		
-		this.lastPlayerY = lastPlayerY;
+		this.ballX = x;
+		this.ballY = y;
 	}
 	
-	private void findLastBallY()
+	public int getPlayerY()
 	{
-		int x = 0;
-		int y = 0;
-		
-		for(y = 0; y < this.ballZoneImage.getHeight(); y++)
-		{
-			for(x = 0; x < this.ballZoneImage.getWidth(); x++)
-			{
-				Color color = this.getColor(this.ballZoneImage.getRGB(x, y));
-				
-				if(color.getRed() == 255 && color.getGreen() == 255 && color.getBlue() == 255)
-				{
-					System.out.println("Ball is on "+x +"," + y);
-					break;
-				}
-			}
-		}
-		
+		return this.playerY;
 	}
 	
-	private Color getColor(int color)
+	public int getBallX()
 	{
-		int red   = (color & 0x00ff0000) >> 16;
-		int green = (color & 0x0000ff00) >> 8;
-		int blue  =  color & 0x000000ff;
-		
-		return new Color(red, green, blue);
+		return this.ballX;
 	}
 	
-	private void calculateBallDirection()
+	public int getBallY()
 	{
-		this.ballDirectionX = this.currentBallX - this.lastBallX;
-		this.ballDirectionY = this.currentBallY - this.lastBallY;
-		
+		return this.ballY;
 	}
 }

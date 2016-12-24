@@ -2,7 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-public class ConfigurationsLoader implements Runnable {
+public class GameDisplayInfos {
 	
 	private String filePath = "game_infos/configurations.txt";
 	
@@ -16,12 +16,12 @@ public class ConfigurationsLoader implements Runnable {
 	private int ballZoneY = 0;
 	private int ballZoneWidth = 0;
 	
-	public ConfigurationsLoader()
+	public GameDisplayInfos()
 	{
 		
 	}
 	
-	public void run()
+	public void loadConfiguration()
 	{
 		try(Scanner scanner = new Scanner(new File(this.filePath)))
 		{
@@ -79,8 +79,6 @@ public class ConfigurationsLoader implements Runnable {
 		{
 			e.printStackTrace();
 		}
-		
-		
 	}
 	
 	public int getGameCornerX()
