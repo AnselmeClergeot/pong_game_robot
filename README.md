@@ -3,5 +3,6 @@ Java program who plays for you against the IA at PONG game http://www.ponggame.o
 
 Live development news :
 
+**Corrected errors on the ball position prediction algorithm, now the robot wins against the beginner oponent (sometimes).**
 
-First version of the pong controller is operational. We lose 10 against 2 in average. Pretty bad ! But I know why and I gonna work on it.
+**My robot is losing because when the ball spanws again when I scored, the ScreenAnalyzer do not have enough time to calculate ball direction, so the pad moves way too late and looses ball... And so on.
