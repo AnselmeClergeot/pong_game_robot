@@ -3,10 +3,6 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 public class BallPositionFinder {
 	
@@ -32,16 +28,8 @@ public class BallPositionFinder {
 	
 	public void update()
 	{
-		this.screenCapture = this.robot.createScreenCapture(new Rectangle(this.infos.getGameCornerX(), this.infos.getGameCornerY()+this.infos.getBallZoneY(), this.infos.getBallZoneWidth(), this.infos.getGameHeight()-this.infos.getBallZoneY()));
-		try
-		{
-			File f = new File("test.png");
-			ImageIO.write(this.screenCapture, "png", f);
-		}
-		catch(IOException e)
-		{
-			e.printStackTrace();
-		}
+		this.screenCapture = this.robot.createScreenCapture(new Rectangle(this.infos.getGameCornerX(), this.infos.getGameCornerY(), this.infos.getGameWidth()-this.infos.getPadWidth(), this.infos.getGameHeight()));
+
 		int x = 0;
 		int y = 0;
 		

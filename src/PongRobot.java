@@ -5,7 +5,7 @@ public class PongRobot implements Runnable {
 	private DecisionMaker decisionMaker;
 	
 	private boolean running = false;
-	private int updateSpeed = 1;
+	private int updateSpeed = 20;
 	private long lastTime = 0;
 	
 	public PongRobot()
@@ -35,7 +35,6 @@ public class PongRobot implements Runnable {
 			if(System.currentTimeMillis() - lastTime > this.updateSpeed)
 			{
 				this.lastTime = System.currentTimeMillis();
-				
 				this.analyzer.update();
 				this.decisionMaker.makeDecision();
 			}

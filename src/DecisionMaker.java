@@ -1,23 +1,23 @@
-
 public class DecisionMaker {
 	private PadMover mover;
 	private ScreenAnalyzer analyzer;
-	private BallPositionPredictor predictor;	
 	private int lastBallX = 0;
 	private int lastBallY = 0;
 	private GameDisplayInfos infos;
+	
+	private double lastBallDirectionX = 0;
+	private double lastBallDirectionY = 0;
+	
 	
 	public DecisionMaker(ScreenAnalyzer analyzer, GameDisplayInfos infos)
 	{
 		this.analyzer = analyzer;
 		this.mover = new PadMover();
-		this.predictor = new BallPositionPredictor(infos);
 		this.infos = infos;
 	}
 	
 	public void makeDecision()
 	{
-		
 		int playerY = this.analyzer.getPlayerY();
 		double ballX = this.lastBallX;
 		double ballY = this.lastBallY;
@@ -25,9 +25,8 @@ public class DecisionMaker {
 		
 		this.lastBallX = this.analyzer.getBallX();
 		this.lastBallY = this.analyzer.getBallY();
+
 		
-		
-		int y = 0;
 		double ballDirectionX = this.lastBallX - ballX;
 		double ballDirectionY = this.lastBallY - ballY;
 		
@@ -39,37 +38,41 @@ public class DecisionMaker {
 			ballDirectionY/=magnitude;
 		}
 		
-		if(ballDirectionX > 0)
+		if(this.lastBallDirectionX != 0 && this.lastBallDirectionY != 0 && ballDirectionX != 0 && ballDirectionY != 0 && Math.abs(this.lastBallDirectionX-ballDirectionX) < 0.01f && Math.abs(this.lastBallDirectionY-ballDirectionY) < 0.01f)
 		{
-			while(ballX < this.infos.getGameWidth()-this.infos.getPadWidth())
+			if(ballDirectionX > 0)
 			{
-				ballX+=ballDirectionX;
-				ballY+=ballDirectionY;
-				
-				if(ballY < 0 || ballY > this.infos.getGameHeight())
-					ballDirectionY = -ballDirectionY;
-			}
-			
-			System.out.println(ballY);
-			
-			while(!(playerY > ballY - 100 && playerY < ballY+100))
-			{
-				
-				if(playerY > ballY)
+				while(ballX+this.infos.getBallWidth() < this.infos.getGameWidth()-this.infos.getPadWidth())
 				{
-					this.mover.goUp();
+					ballX+=ballDirectionX;
+					ballY+=ballDirectionY;
+					
+					if(ballY < 0 || ballY+this.infos.getBallWidth() > this.infos.getGameHeight())
+						ballDirectionY = -ballDirectionY;
 				}
-				else
-				{
-					this.mover.goDown();
-				}
+
 				
-				this.analyzer.update();
-				playerY = this.analyzer.getPlayerY();
+				while(!(ballY+this.infos.getBallWidth() > playerY && ballY < playerY+this.infos.getPadHeight()))
+				{
+					
+					if(ballY + this.infos.getBallWidth() < playerY)
+					{
+						this.mover.goUp();
+					}
+					
+					else
+					{
+						this.mover.goDown();
+					}
+					
+					this.analyzer.update();
+					playerY = this.analyzer.getPlayerY();
+					this.mover.releaseAll();
+				}
 			}
-			this.mover.releaseAll();
 		}
 		
-		
+		this.lastBallDirectionX = ballDirectionX;
+		this.lastBallDirectionY = ballDirectionY;
 	}
 }
